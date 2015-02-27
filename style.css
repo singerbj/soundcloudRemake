@@ -1,0 +1,8 @@
+tr:hover {
+	background: rgb(255, 221, 221) !important;
+	cursor: pointer;
+}
+
+.clicked {
+    background: rgb(221, 255, 221) !important;
+}
