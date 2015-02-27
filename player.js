@@ -11,12 +11,11 @@ var Player = function(){
   self.volume;
   
   $('body').click(function(){
-    console.log(self.history.length, self.future.length, self.currentSong);
+    console.log(self.history, self.future);
   });
 
   
   self.playSong = function(){      
-    console.log(1);
     if(self.currentSong){      
       if(!self.volume){ self.volume = 50; }
       self.currentSong.setVolume(self.volume);        
@@ -29,18 +28,15 @@ var Player = function(){
     }
   }
   self.pauseSong = function(){
-    console.log(2);   
     if(self.currentSong){
-      console.log('pausing');
       self.currentSong.pause();
     }
   }    
   self.backSong = function(){
-    console.log(3);
     if(self.history.length > 0){   
       if(self.currentSong && self.currentSong.position < 1500 && self.history.length > 0){
         self.currentSong.unload();
-        self.future.unshift(self.currentSong.id);
+        self.future.unshift(parseInt(self.currentSong.sID.replace('T/tracks/', '').split('-')[0], 10));
         SC.stream("/tracks/" + self.history.splice(self.history.length - 1, 1)[0], function(sound){
           self.currentSong = sound;
           self.playSong();
@@ -52,7 +48,6 @@ var Player = function(){
     }
   }
   self.forwardSong = function(){
-    console.log(4);
     if(self.future.length > 0){
       if(self.currentSong){         
         self.currentSong.unload();
@@ -67,7 +62,6 @@ var Player = function(){
   }
   self.loadSongs = function(arrayOfSongIds){
     self.future = arrayOfSongIds;
-    console.log("self.future", self.future);
   }
   self.volumeUp = function(){
     if(self.volume && self.volume + 5 <= 100){
