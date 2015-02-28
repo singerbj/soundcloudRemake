@@ -8,15 +8,32 @@
 
 </head>
 <body>
-    <button id="back">Back</button>
-    <button id="play">Play</button>
-    <button id="pause">Pause</button>
-    <button id="forward">Forward</button>
-    
-    <input type="text" id="search"i class="form-control"></input>
-    <br>
+    <input type="text" id="search" class="form-control" placeholder="Search..."></input>
     <br>
     <div id="songs"></div>
+    <div class="controls">
+      <button id="back" class="btn">Back</button>
+      <button id="play" class="btn">Play</button>
+      <button id="pause" class="btn">Pause</button>
+      <button id="forward" class="btn">Forward</button>
+
+      <div class="pull-right">
+        <table>
+          <tr>
+            <td>Postion</td>
+            <td><div id="position">0:00</div></td>
+          </tr>
+          <tr>
+            <td>Total Time</td>
+            <td><div id="total">0:00</div></td> 
+          </tr>
+          <tr>
+            <td>Time Remaining</td>
+            <td><div id="remaining">0:00</div></td> 
+          </tr>
+        <table>
+      </div>
+    </div>
     <script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.14/angular.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>

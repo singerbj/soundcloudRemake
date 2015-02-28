@@ -6,3 +6,27 @@ tr:hover {
 .clicked {
     background: rgb(221, 255, 221) !important;
 }
+
+.controls{
+  position: fixed;
+  height: 75px;
+  width: 100%;
+  top: calc(100% - 75px);
+  left: 0px;
+  text-align: center;
+  background: rgb(221, 221, 255) !important;
+}
+
+#songs {
+  position: fixed;
+  height: calc(100% - 125px);
+  width: 100%;
+  top: 50px;
+  left: 0px;
+  overflow: auto;
+
+}
+
+body{
+  position: relative; 
+}

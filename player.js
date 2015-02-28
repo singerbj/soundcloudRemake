@@ -11,31 +11,48 @@ var Player = function(){
   self.volume;
   
   $('body').click(function(){
-    console.log(self.history, self.future);
+    //console.log(self.history, self.future);
   });
 
-  
-  self.playSong = function(songId){     
+  var mToS = function(millis) {
+    var minutes = Math.floor(millis / 60000);
+    var seconds = ((millis % 60000) / 1000).toFixed(0);
+    return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+  }
+
+  self.playSong = function(songId){
+      self.time = null;
       if(songId){      
         if(!self.volume){ self.volume = 50; }
-        SC.stream("/tracks/" + songId, function(sound){          
+        SC.stream("/tracks/" + songId, {
+          onfinish: function(){
+            self.forwardSong();
+          },
+          whileplaying: function(sound){
+            $('#position')[0].innerHTML = mToS(this.position);
+            $('#total')[0].innerHTML = mToS(this.duration);
+            $('#remaining')[0].innerHTML = mToS(this.duration - this.position);
+          }
+        }, function(sound){
+          console.log(sound);
           if(self.currentSong){ self.currentSong.sound.unload(); }
           self.currentSong = {sound: sound, id: songId};
-          window.currentSong = {sound: sound, id: songId};
           self.currentSong.sound.setVolume(self.volume);        
-          self.currentSong.sound.play();
-          self.currentSong.sound._onfinish(function(){
-            self.forwardSong();
-          });
+          self.currentSong.sound.start();
+          
+          //set class for click 
+          if(self.lastPlayed && $('#' + self.lastPlayed.id)[0]){ 
+            $('#' + self.lastPlayed.id)[0].className = "";
+          }
+          self.lastPlayed = self.currentSong;
+          if($('#' + self.lastPlayed.id)[0]){
+            $('#' + self.lastPlayed.id)[0].className = "clicked";
+          }
+
         });
       }else{
-        if(!self.currentSong){
-          self.forwardSong();
-        }else{
-          console.log(self.currentSong.sound.paused);
-          if(self.currentSong.sound.paused === true){
-            self.currentSong.sound.play();
-          }
+        if(self.currentSong && self.currentSong.sound.paused === true){
+          self.currentSong.sound.play();
         }
       }    
   }
@@ -79,6 +96,9 @@ var Player = function(){
     }else{
       self.volume = 0;
     }
+  }
+  self.getTime = function(){
+    return self.time;
   }
   //self.addToQueue = function(){
   //

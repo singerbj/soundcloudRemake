@@ -11,7 +11,6 @@ $(document).ready(function(){
 
     var player = new Player();
     window.p = player;
-    console.log(player);
 
     back.click(function(){
         player.backSong();
@@ -26,9 +25,6 @@ $(document).ready(function(){
         player.forwardSong();
     });
 
-
-
-
     var populateSongs = function(text){
         songs.empty();
         SC.get('/tracks', { q: text }, function(tracks) {
@@ -36,7 +32,6 @@ $(document).ready(function(){
                 player.loadSongs(tracks.filter(function(track){
                     return track.track_type === 'original';
                 }).map(function(track){
-                    console.log(track);
                     return track.id;
                 }));
 
@@ -60,11 +55,6 @@ $(document).ready(function(){
                             return track.id;
                         }));
                         player.forwardSong();
-
-                        if(lastClicked){ lastClicked.className = ""; }
-                        lastClicked = e.target.parentElement;
-                        lastClicked.className = "clicked";
-
                     });
 
                     table.append(tr);
@@ -76,8 +66,8 @@ $(document).ready(function(){
     };
 
     $(document).ready(function(){
-        populateSongs("g-eazy");
-        search[0].value = "g-eazy";
+        populateSongs("kygo");
+        search[0].value = "kygo";
     })
 
     search.keyup(function(e){    
