@@ -8,11 +8,10 @@ var Player = function(){
   self.future = [];
   self.history = [];
   self.queue = [];
-  self.volume;
+  self.volume = 50;
   
   SC.connect(function() {
     SC.get('/me', function(me) { 
-      console.log(me.id);
       self.user = me;
     });
   });
@@ -24,55 +23,52 @@ var Player = function(){
     return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
   }
 
-  self.playSong = function(songId){
+  self.playPauseSong = function(songId){
       self.time = null;
       if(songId){      
-        if(!self.volume){ self.volume = 50; }
         SC.stream("/tracks/" + songId, {
           onfinish: function(){
             self.forwardSong();
           },
           whileplaying: function(sound){
             $('#position')[0].innerHTML = mToS(this.position);
-            $('#total')[0].innerHTML = mToS(this.duration);
+            //$('#total')[0].innerHTML = mToS(this.duration);
             $('#remaining')[0].innerHTML = mToS(this.duration - this.position);
           }
         }, function(sound){
-          console.log(sound);
-          if(self.currentSong){ self.currentSong.sound.unload(); }
-          self.currentSong = {sound: sound, id: songId};
-          self.currentSong.sound.setVolume(self.volume);        
-          self.currentSong.sound.start();
-          
-          //set class for click 
-          if(self.lastPlayed && $('#' + self.lastPlayed.id)[0]){ 
-            $('#' + self.lastPlayed.id)[0].className = "";
-          }
-          self.lastPlayed = self.currentSong;
-          if($('#' + self.lastPlayed.id)[0]){
-            $('#' + self.lastPlayed.id)[0].className = "clicked";
-          }
-
+            SC.get("/tracks/" + songId, {}, function(track){              
+              $('#title')[0].innerHTML = track.title;
+              $('#artist')[0].innerHTML = track.user.username;
+            });
+            if(self.currentSong){ self.currentSong.sound.unload(); }
+            self.currentSong = {sound: sound, id: songId};
+            self.currentSong.sound.setVolume(self.volume);        
+            self.currentSong.sound.start();            
+            self.clicked();
         });
       }else{
-        if(self.currentSong && self.currentSong.sound.paused === true){
-          self.currentSong.sound.play();
+        if(self.currentSong){
+          if(self.currentSong.sound.paused === true){
+            self.currentSong.sound.play();
+          }else{
+            self.currentSong.sound.pause();
+          }
         }
       }    
   }
-  self.pauseSong = function(){
-    if(self.currentSong){
-      self.currentSong.sound.pause();
-    }
-  }    
+  // self.pauseSong = function(){
+  //   if(self.currentSong){
+  //     self.currentSong.sound.pause();
+  //   }
+  // }    
   self.backSong = function(){
     if(self.history.length > 0){   
       if(self.currentSong && self.currentSong.sound.position < 1500 && self.history.length > 0){
         self.future.unshift(self.currentSong.id);        
-        self.playSong(self.history.splice(self.history.length - 1, 1)[0]);
+        self.playPauseSong(self.history.splice(self.history.length - 1, 1)[0]);
       }else{      
         self.currentSong.sound.setPosition(0);
-        self.playSong();
+        self.playPauseSong();
       }
     }
   }
@@ -81,13 +77,13 @@ var Player = function(){
       if(self.currentSong){         
         self.history.push(self.currentSong.id);
       }          
-      self.playSong(self.queue.splice(0, 1)[0]);
+      self.playPauseSong(self.queue.splice(0, 1)[0]);
     }else{  
       if(self.future.length > 0){
         if(self.currentSong){         
           self.history.push(self.currentSong.id);
         }          
-        self.playSong(self.future.splice(0, 1)[0]);
+        self.playPauseSong(self.future.splice(0, 1)[0]);
       }
     }
   }
@@ -113,6 +109,18 @@ var Player = function(){
   }
   self.addToQueue = function(songId){
     self.queue.push(songId)
+  }
+  self.clicked = function(){
+    //set class for click 
+    if(self.lastPlayed && $('#' + self.lastPlayed.id)[0]){ 
+      $('#' + self.lastPlayed.id)[0].className = "";
+    }
+    if(self.currentSong){
+      self.lastPlayed = self.currentSong;
+      if($('#' + self.lastPlayed.id)[0]){
+        $('#' + self.lastPlayed.id)[0].className = "clicked";
+      }
+    }
   }
   //self.removeFromQueue = function(index){
   //

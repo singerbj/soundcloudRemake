@@ -21,8 +21,7 @@ app.directive('controls', function() {
     controller: function(){
         console.log('here');
         var back = $('#back');
-        var play = $('#play');
-        var pause = $('#pause');
+        var playPause = $('#playPause');
         var forward = $('#forward');
         var songs = $('#songs');
         var search = $('#search');
@@ -35,12 +34,9 @@ app.directive('controls', function() {
         back.click(function(){
             player.backSong();
         });
-        play.click(function(){
-            player.playSong();
-        });
-        pause.click(function(){
-            player.pauseSong();
-        });
+        playPause.click(function(){
+            player.playPauseSong();
+        });        
         forward.click(function(){
             player.forwardSong();
         });
@@ -55,6 +51,7 @@ app.directive('controls', function() {
 
         var populateSongs = function(text){
         songs.empty();
+        songs.append('<img src="//d13yacurqjgara.cloudfront.net/users/12755/screenshots/1037374/hex-loader2.gif"/>');
         SC.get('/tracks', { q: text }, function(tracks) {
             if(tracks.length > 0){
                 player.loadSongs(tracks.filter(function(track){
@@ -69,7 +66,7 @@ app.directive('controls', function() {
                 var headerTr = $('<tr></tr>').addClass("header");
                 headerTr.append($('<th><b>Title</b></th>').addClass("title"));    
                 headerTr.append($('<th><b>Artist</b></th>').addClass("artist")); 
-                headerTr.append($('<th></td>').addClass("artist")); 
+                headerTr.append($('<th></th>').addClass("artist")); 
                 table.append(headerTr);
                 
                 var songIndex = 0;
@@ -78,7 +75,7 @@ app.directive('controls', function() {
                     var td = $('<td>' + track.title + '</td>').addClass("title");    
                     tr.append(td);    
                     tr.append($('<td>' + track.user.username + '</td>').addClass("artist"));
-                    var qTd = $('<td><button class="btn">Add to Q</button></td>');
+                    var qTd = $('<td><button class="btn btn-warning">Add to Q</button></td>');
                     tr.append(qTd);
                     tr.songIndex = songIndex;
 
@@ -95,13 +92,15 @@ app.directive('controls', function() {
                     table.append(tr);
                     songIndex += 1;
                 });           
+                songs.empty();
                 songs.append(table);
+                player.clicked();
             }
         });
     };
 
     $(document).ready(function(){
-        populateSongs("kygo");        
+        populateSongs(["kygo", "g-eazy", "madeon", "skizzy mars", "mystery skulls"][Math.floor((Math.random() * 4) + 0)]);        
     });
 
     search.keyup(function(e){    

@@ -1,18 +1,32 @@
-<button id="back" class="btn">Back</button>
-<button id="play" class="btn">Play</button>
-<button id="pause" class="btn">Pause</button>
-<button id="forward" class="btn">Forward</button>
+<button id="back" class="btn btn-warning">
+  <span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
+</button>
+<button id="playPause" class="btn btn-info">
+  <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+  <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
+</button>
+<button id="forward" class="btn btn-warning">
+  <span class="glyphicon glyphicon-forward" aria-hidden="true"></span>
+</button>
 
 <div class="pull-right">
   <table>
     <tr>
+      <td>Song</td>
+      <td><div id="title">-</div></td>
+    </tr>
+    <tr>
+      <td>Artist</td>
+      <td><div id="artist">-</div></td> 
+    </tr>    
+    <tr>
       <td>Postion</td>
       <td><div id="position">0:00</div></td>
     </tr>
-    <tr>
+    <!-- <tr>
       <td>Total Time</td>
       <td><div id="total">0:00</div></td> 
-    </tr>
+    </tr> -->
     <tr>
       <td>Time Remaining</td>
       <td><div id="remaining">0:00</div></td> 
