@@ -25,6 +25,12 @@ $(document).ready(function(){
         player.forwardSong();
     });
 
+    $(document).click(function(){
+      SC.get('/users/' + player.user.id + '/playlists', {}, function(playlists) {
+        console.log(playlists);  
+      });
+    });
+
     var populateSongs = function(text){
         songs.empty();
         SC.get('/tracks', { q: text }, function(tracks) {
@@ -41,20 +47,27 @@ $(document).ready(function(){
                 var headerTr = $('<tr></tr>');
                 headerTr.append($('<td><b>Title</b></td>').addClass("title"));    
                 headerTr.append($('<td><b>Artist</b></td>').addClass("artist")); 
+                headerTr.append($('<td></td>').addClass("artist")); 
                 table.append(headerTr);
                 
                 var songIndex = 0;
                 tracks.forEach(function(track){
                     var tr = $('<tr id=' + track.id + '></tr>');
-                    tr.append($('<td>' + track.title + '</td>').addClass("title"));    
+                    var td = $('<td>' + track.title + '</td>').addClass("title");    
+                    tr.append(td);    
                     tr.append($('<td>' + track.user.username + '</td>').addClass("artist"));
+                    var qTd = $('<td><button class="btn">Add to Q</button></td>');
+                    tr.append(qTd);
                     tr.songIndex = songIndex;
 
-                    tr.click(function(e){
+                    td.click(function(e){
                         player.loadSongs(tracks.slice(tr.songIndex).map(function(track){
                             return track.id;
                         }));
                         player.forwardSong();
+                    });
+                    qTd.click(function(e){
+                        player.addToQueue(track.id);
                     });
 
                     table.append(tr);

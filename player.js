@@ -2,17 +2,21 @@ var Player = function(){
   var self = this;
   SC.initialize({
       client_id: '36795704793d977a265b546b855f7ecb',
-      redirect_uri: 'http://localhost:8080/'
+      redirect_uri: 'http://localhost:8000/callback.html'
   });
   
   self.future = [];
   self.history = [];
-  //self.queue = [];
+  self.queue = [];
   self.volume;
   
-  $('body').click(function(){
-    //console.log(self.history, self.future);
+  SC.connect(function() {
+    SC.get('/me', function(me) { 
+      console.log(me.id);
+      self.user = me;
+    });
   });
+
 
   var mToS = function(millis) {
     var minutes = Math.floor(millis / 60000);
@@ -73,12 +77,19 @@ var Player = function(){
     }
   }
   self.forwardSong = function(){
-    if(self.future.length > 0){
+    if(self.queue.length > 0){
       if(self.currentSong){         
         self.history.push(self.currentSong.id);
       }          
-      self.playSong(self.future.splice(0, 1)[0]);
-    } 
+      self.playSong(self.queue.splice(0, 1)[0]);
+    }else{  
+      if(self.future.length > 0){
+        if(self.currentSong){         
+          self.history.push(self.currentSong.id);
+        }          
+        self.playSong(self.future.splice(0, 1)[0]);
+      }
+    }
   }
   self.loadSongs = function(arrayOfSongIds){
     self.future = arrayOfSongIds;
@@ -100,9 +111,11 @@ var Player = function(){
   self.getTime = function(){
     return self.time;
   }
-  //self.addToQueue = function(){
+  self.addToQueue = function(songId){
+    self.queue.push(songId)
+  }
+  //self.removeFromQueue = function(index){
   //
-  //}
-    
+  //}  
   return self;
 };
