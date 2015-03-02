@@ -2,7 +2,7 @@ var Player = function(){
   var self = this;
   SC.initialize({
       client_id: '36795704793d977a265b546b855f7ecb',
-      redirect_uri: 'http://192.168.0.152:8000/callback.html'
+      redirect_uri: 'http://192.168.0.152:8000/templates/callback.html'
   });
   
   self.future = [];
@@ -10,11 +10,11 @@ var Player = function(){
   self.queue = [];
   self.volume = 50;
   
-  SC.connect(function() {
-    SC.get('/me', function(me) { 
-      self.user = me;
-    });
-  });
+  // SC.connect(function() {
+  //   SC.get('/me', function(me) { 
+  //     self.user = me;
+  //   });
+  // });
 
 
   var mToS = function(millis) {

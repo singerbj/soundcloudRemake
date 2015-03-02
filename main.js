@@ -64,18 +64,28 @@ app.directive('controls', function() {
                 table.addClass('table table-striped');
                 
                 var headerTr = $('<tr></tr>').addClass("header");
+
+                headerTr.append($('<th></th>').addClass("image")); 
                 headerTr.append($('<th><b>Title</b></th>').addClass("title"));    
                 headerTr.append($('<th><b>Artist</b></th>').addClass("artist")); 
-                headerTr.append($('<th></th>').addClass("artist")); 
+                headerTr.append($('<th></th>').addClass("actions")); 
                 table.append(headerTr);
                 
                 var songIndex = 0;
                 tracks.forEach(function(track){
                     var tr = $('<tr id=' + track.id + '></tr>');
+                    var artworkDiv = $('<div class="artwork"></div>');
+                    if(track.artwork_url && track.artwork_url.length > 0){
+                        artworkDiv.css("background-image", 'url("' + track.artwork_url + '")');
+                    }
+                    artworkDiv.css("background-color", '#FFEBDD');
+                    var artworkTd = $('<td></td>')
+                    artworkTd.html(artworkDiv);
+                    tr.append(artworkTd);
                     var td = $('<td>' + track.title + '</td>').addClass("title");    
                     tr.append(td);    
                     tr.append($('<td>' + track.user.username + '</td>').addClass("artist"));
-                    var qTd = $('<td><button class="btn btn-warning">Add to Q</button></td>');
+                    var qTd = $('<td><button class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-plus"></span> to Q</button></td>');
                     tr.append(qTd);
                     tr.songIndex = songIndex;
 
@@ -111,13 +121,3 @@ app.directive('controls', function() {
   };
 });
 
-
-
-
-
-
-$(document).ready(function(){
-    
-
-    
-});
