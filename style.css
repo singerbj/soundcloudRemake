@@ -1,5 +1,7 @@
-tr:hover {
-	background: rgb(255, 221, 221) !important;
+tr:not(.header):hover {
+  background: rgb(255, 221, 221) !important;  
+}
+.title:hover {	
 	cursor: pointer;
 }
 
@@ -15,9 +17,10 @@ tr:hover {
   left: 0px;
   text-align: center;
   background: rgb(221, 221, 255) !important;
+  padding: 10px;
 }
 
-#songs {
+/*#songs {
   position: fixed;
   height: calc(100% - 125px);
   width: 100%;
@@ -25,8 +28,9 @@ tr:hover {
   left: 0px;
   overflow: auto;
 
-}
+}*/
 
 body{
-  position: relative; 
+  position: relative;
+  padding-bottom: 75px;
 }

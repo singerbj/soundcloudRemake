@@ -1,37 +1,59 @@
-$(document).ready(function(){
-    var back = $('#back');
-    var play = $('#play');
-    var pause = $('#pause');
-    var forward = $('#forward');
+var app = angular.module('SoundcloudRemake', []);
 
-    var songs = $('#songs');
-    var search = $('#search');
+app.directive('navBar', function() {
+  return {
+    restrict: 'E',
+    templateUrl: 'templates/navbar.html'
+  };
+});
 
-    var lastClicked;
+// app.directive('songs', function() {
+//   return {
+//     restrict: 'E',
+//     templateUrl: 'templates/songs.html'
+//   };
+// });
 
-    var player = new Player();
-    window.p = player;
+app.directive('controls', function() {
+  return {
+    restrict: 'E',
+    templateUrl: 'templates/controls.html',
+    controller: function(){
+        console.log('here');
+        var back = $('#back');
+        var play = $('#play');
+        var pause = $('#pause');
+        var forward = $('#forward');
+        var songs = $('#songs');
+        var search = $('#search');
 
-    back.click(function(){
-        player.backSong();
-    });
-    play.click(function(){
-        player.playSong();
-    });
-    pause.click(function(){
-        player.pauseSong();
-    });
-    forward.click(function(){
-        player.forwardSong();
-    });
+        var player = new Player();
+        var lastClicked;
 
-    $(document).click(function(){
-      SC.get('/users/' + player.user.id + '/playlists', {}, function(playlists) {
-        console.log(playlists);  
-      });
-    });
+        window.p = player;
 
-    var populateSongs = function(text){
+        back.click(function(){
+            player.backSong();
+        });
+        play.click(function(){
+            player.playSong();
+        });
+        pause.click(function(){
+            player.pauseSong();
+        });
+        forward.click(function(){
+            player.forwardSong();
+        });
+
+        // $(document).click(function(){
+        //   SC.get('/users/' + player.user.id + '/playlists', {}, function(playlists) {
+        //     console.log(playlists);  
+        //   });
+        // });
+
+        
+
+        var populateSongs = function(text){
         songs.empty();
         SC.get('/tracks', { q: text }, function(tracks) {
             if(tracks.length > 0){
@@ -44,10 +66,10 @@ $(document).ready(function(){
                 var table = $('<table></table>');
                 table.addClass('table table-striped');
                 
-                var headerTr = $('<tr></tr>');
-                headerTr.append($('<td><b>Title</b></td>').addClass("title"));    
-                headerTr.append($('<td><b>Artist</b></td>').addClass("artist")); 
-                headerTr.append($('<td></td>').addClass("artist")); 
+                var headerTr = $('<tr></tr>').addClass("header");
+                headerTr.append($('<th><b>Title</b></th>').addClass("title"));    
+                headerTr.append($('<th><b>Artist</b></th>').addClass("artist")); 
+                headerTr.append($('<th></td>').addClass("artist")); 
                 table.append(headerTr);
                 
                 var songIndex = 0;
@@ -79,12 +101,24 @@ $(document).ready(function(){
     };
 
     $(document).ready(function(){
-        populateSongs("kygo");
-        search[0].value = "kygo";
-    })
+        populateSongs("kygo");        
+    });
 
     search.keyup(function(e){    
         populateSongs(e.currentTarget.value);
     });
 
+    }
+  };
+});
+
+
+
+
+
+
+$(document).ready(function(){
+    
+
+    
 });
