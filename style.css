@@ -15,7 +15,8 @@ tr:not(.header):hover {
   width: 100%;
   top: calc(100% - 100px);
   left: 0px;
-  background: rgb(221, 221, 255) !important;
+  background: #393A35;
+  color: #FFF !important;
   padding: 10px;
 }
 
