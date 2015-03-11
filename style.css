@@ -1,42 +1,54 @@
 tr:not(.header):hover {
-  background: rgb(255, 235, 221) !important;  
+    background: rgb(255, 235, 221) !important;  
 }
 .title:hover {	
-	cursor: pointer;
+    cursor: pointer;
 }
 
 .clicked {
     background: rgb(221, 255, 221) !important;
 }
 
+.timeMachine{
+    height: calc(100% - 100px) !important;
+    width: 100% !important;
+}
+
 .controls{
-  position: fixed;
-  height: 100px;
-  width: 100%;
-  top: calc(100% - 100px);
-  left: 0px;
-  background: #393A35;
-  color: #FFF !important;
-  padding: 10px;
+    position: fixed;
+    height: 100px;
+    width: 50%;
+    top: calc(100% - 100px);
+    left: 50%;
+    background: rgb(62, 63, 58) !important;  
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 5px;
 }
 
 /*#songs {
-  position: fixed;
-  height: calc(100% - 125px);
-  width: 100%;
-  top: 50px;
-  left: 0px;
-  overflow: auto;
+position: fixed;
+height: calc(100% - 125px);
+width: 100%;
+top: 50px;
+left: 0px;
+overflow: auto;
 
 }*/
 
 body{
-  position: relative;
-  padding-bottom: 100px;
+    position: relative;
+    padding-bottom: 100px;
 }
 
 .artwork{
-  width: 75px;
-  height: 75px;
-  background-size: 75px 75px;
+    width: 75px;
+    height: 75px;
+    background-size: 75px 75px;
+}
+
+.whiteText tr td{
+    color: white !important;
 }
